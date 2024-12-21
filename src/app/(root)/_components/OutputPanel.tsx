@@ -30,6 +30,7 @@ function OutputPanel() {
                     <span className="text-sm font-medium text-gray-300">Output</span>
                 </div>
 
+
                 {hasContent && (
                     <button
                         onClick={handleCopy}
