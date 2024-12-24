@@ -1,6 +1,5 @@
-import { mutation, query } from './_generated/server';
-import { v } from "convex/values"
-
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
 export const syncUser = mutation({
     args: {
@@ -8,26 +7,24 @@ export const syncUser = mutation({
         email: v.string(),
         name: v.string(),
     },
-
     handler: async (ctx, args) => {
-        const existingUser = await ctx.db.query("users")
-            .filter(q => q.eq(q.field("userId"), args.userId))
+        const existingUser = await ctx.db
+            .query("users")
+            .filter((q) => q.eq(q.field("userId"), args.userId))
             .first();
 
+        console.log("Is user alrady exisit", existingUser)
 
-        if (existingUser) {
+        if (!existingUser) {
             await ctx.db.insert("users", {
                 userId: args.userId,
                 email: args.email,
                 name: args.name,
                 isPro: false,
-            })
+            });
         }
-
-    }
-
-})
-
+    },
+});
 
 export const getUser = query({
     args: { userId: v.string() },

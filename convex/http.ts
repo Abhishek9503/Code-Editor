@@ -1,19 +1,19 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
-import { WebhookEvent } from "@clerk/nextjs/server";
 import { Webhook } from "svix";
-import { api } from "./_generated/api";
+import { WebhookEvent } from "@clerk/nextjs/server";
+import { api, internal } from "./_generated/api";
 
 const http = httpRouter();
+
 
 http.route({
     path: "/clerk-webhook",
     method: "POST",
     handler: httpAction(async (ctx, request) => {
-        const webhookSecret = process.env.CLERK_WEBHOOK_SECRET
-
+        const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
         if (!webhookSecret) {
-            throw new Error("Missing webhook secret");
+            throw new Error("Missing CLERK_WEBHOOK_SECRET environment variable");
         }
 
         const svix_id = request.headers.get("svix-id");
@@ -21,7 +21,9 @@ http.route({
         const svix_timestamp = request.headers.get("svix-timestamp");
 
         if (!svix_id || !svix_signature || !svix_timestamp) {
-            throw new Error("Missing required headers");
+            return new Response("Error occurred -- no svix headers", {
+                status: 400,
+            });
         }
 
         const payload = await request.json();
@@ -31,16 +33,21 @@ http.route({
         let evt: WebhookEvent;
 
         try {
-            evt = wh.verify(body,  { "svix-id": svix_id, "svix-timestamp": svix_timestamp ,"svix-signature":svix_signature }) as WebhookEvent;
-        } catch (error) {
-            console.error("Error verifying webhook", error);
-            return new Response("Error verifying webhook", { status: 400 });
+            evt = wh.verify(body, {
+                "svix-id": svix_id,
+                "svix-timestamp": svix_timestamp,
+                "svix-signature": svix_signature,
+            }) as WebhookEvent;
+        } catch (err) {
+            console.error("Error verifying webhook:", err);
+            return new Response("Error occurred", { status: 400 });
         }
 
         const eventType = evt.type;
-
         if (eventType === "user.created") {
+            // save the user to convex db
             const { id, email_addresses, first_name, last_name } = evt.data;
+
             const email = email_addresses[0].email_address;
             const name = `${first_name || ""} ${last_name || ""}`.trim();
 
@@ -48,16 +55,16 @@ http.route({
                 await ctx.runMutation(api.users.syncUser, {
                     userId: id,
                     email,
-                    name
+                    name,
                 });
             } catch (error) {
-                console.error("Error creating user", error);
+                console.log("Error creating user:", error);
                 return new Response("Error creating user", { status: 500 });
             }
         }
 
-        return new Response("Webhook processed", { status: 200 });
-    })
+        return new Response("Webhook processed successfully", { status: 200 });
+    }),
 });
 
 export default http;
