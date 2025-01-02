@@ -7,6 +7,8 @@ import OutputPanel from './_components/OutputPanel';
 
 export default function Home() {
 
+  
+
   return (
     <div className='min-h-screen'>
 
