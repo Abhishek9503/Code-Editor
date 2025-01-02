@@ -13,8 +13,6 @@ export const syncUser = mutation({
             .filter((q) => q.eq(q.field("userId"), args.userId))
             .first();
 
-        console.log("Is user alrady exisit", existingUser) 
-
         if (!existingUser) {
             await ctx.db.insert("users", {
                 userId: args.userId,
@@ -23,23 +21,5 @@ export const syncUser = mutation({
                 isPro: false,
             });
         }
-    },
-});
-
-export const getUser = query({
-    args: { userId: v.string() },
-
-    handler: async (ctx, args) => {
-        if (!args.userId) return null;
-
-        const user = await ctx.db
-            .query("users")
-            .withIndex("by_user_id")
-            .filter((q) => q.eq(q.field("userId"), args.userId))
-            .first();
-
-        if (!user) return null;
-
-        return user;
     },
 });
