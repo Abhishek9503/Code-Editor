@@ -1,13 +1,11 @@
 'use client'
 
-import { SignInButton, SignOutButton, UserButton, useUser } from '@clerk/nextjs';
+
 import Header from './_components/Header';
 import EditorPanel from './_components/EditorPanel';
 import OutputPanel from './_components/OutputPanel';
 
 export default function Home() {
-
-  
 
   return (
     <div className='min-h-screen'>

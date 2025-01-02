@@ -1,6 +1,5 @@
 import { useCodeEditorStore } from "@/store/useCodeEditor";
 import { useMutation } from "convex/react";
-import { div, s } from "framer-motion/client";
 import { useState } from "react";
 import { api } from "../../../../convex/_generated/api";
 import { XIcon } from "lucide-react";
