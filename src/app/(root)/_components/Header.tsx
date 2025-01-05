@@ -10,6 +10,7 @@ import LanguageSelector from "./LanguageSelector";
 import HeaderProfileBtn from "./HeaderProfileBtn";
 import RunButton from "../RunButton";
 
+
 async function Header() {
 //   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 //   const user = await currentUser();
@@ -17,6 +18,7 @@ async function Header() {
 //   const convexUser = await convex.query(api.users.getUser, {
 //     userId: user?.id || "",
 //   });
+
 
   return (
     <div className="relative z-10">
