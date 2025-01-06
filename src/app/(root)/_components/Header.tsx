@@ -1,6 +1,7 @@
 // import { currentUser } from "@clerk/nextjs/server";
 // import { ConvexHttpClient } from "convex/browser";
 // import { api } from "../../../../convex/_generated/api";
+"use client"
 import Link from "next/link";
 import { Blocks, Code2, Sparkles } from "lucide-react";
 import { SignedIn } from "@clerk/nextjs";
@@ -11,7 +12,8 @@ import HeaderProfileBtn from "./HeaderProfileBtn";
 import RunButton from "../RunButton";
 
 
-async function Header() {
+// removed the async func
+ function Header() {
 //   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 //   const user = await currentUser();
 
@@ -19,12 +21,11 @@ async function Header() {
 //     userId: user?.id || "",
 //   });
 
-
   return (
     <div className="relative z-10">
       <div
         className="flex items-center lg:justify-between justify-center 
-        bg-[#0a0a0f]/80 backdrop-blur-xl p-6 mb-4 rounded-lg"
+        bg-[#0a0a0f]/80 backdrop-blur-xl p-6 mb-4 rounded-lg "
       >
         <div className="hidden lg:flex items-center gap-8">
           <Link href="/" className="flex items-center gap-3 group relative">
@@ -75,24 +76,24 @@ async function Header() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap-reverse lg:flex-nowrap lg:flex-row p-2 ">
           <div className="flex items-center gap-3">
             <ThemeSelector />
             <LanguageSelector hasAccess={Boolean(true)} />
           </div>
 
           {/* {!convexUser?.isPro && ( */}
-            <Link
-              href="/pricing"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10 
+          <Link
+            href="/pricing"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10 
                 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 
                 transition-all duration-300"
-            >
-              <Sparkles className="w-4 h-4 text-amber-400 hover:text-amber-300" />
-              <span className="text-sm font-medium text-amber-400/90 hover:text-amber-300">
-                Pro
-              </span>
-            </Link>
+          >
+            <Sparkles className="w-4 h-4 text-amber-400 hover:text-amber-300" />
+            <span className="text-sm font-medium text-amber-400/90 hover:text-amber-300">
+              Pro
+            </span>
+          </Link>
           {/* )} */}
 
           <SignedIn>
