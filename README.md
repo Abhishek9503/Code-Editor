@@ -17,7 +17,6 @@
 - ⚙️ Advanced theme & editor customization capabilities
 - 🔍 Personal profile with execution history tracking
 - 📊 Comprehensive statistics dashboard
-- 📜 Customizable fiat & crypto contracts
 - 🔔 Webhook integration support
 - 🎓 Professional deployment walkthrough
 
